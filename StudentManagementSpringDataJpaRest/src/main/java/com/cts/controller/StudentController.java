@@ -3,6 +3,7 @@ package com.cts.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cts.exception.StudentNotFoundExcepttion;
 import com.cts.model.Student;
 import com.cts.service.StudentService;
 
@@ -24,7 +26,7 @@ public class StudentController {
 	StudentService service;
 
 	@PostMapping("/create") // http://localhost:6666/student/create
-	public String createStudent(@RequestBody Student student) {
+	public String createStudent(@Validated @RequestBody Student student) {
 		return service.createStudent(student);
 	}
 
@@ -39,7 +41,7 @@ public class StudentController {
 	}
 
 	@GetMapping("/getById/{sid}") // http://localhost:6666/student/getById
-	public Student retrieveStudent(@PathVariable("sid") int studentId) {
+	public Student retrieveStudent(@PathVariable("sid") int studentId) throws StudentNotFoundExcepttion {
 		return service.getStudent(studentId);
 	}
 

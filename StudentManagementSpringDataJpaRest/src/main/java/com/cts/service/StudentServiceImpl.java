@@ -1,11 +1,13 @@
 package com.cts.service;
 
+import java.rmi.StubNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cts.exception.StudentNotFoundExcepttion;
 import com.cts.model.Student;
 import com.cts.repository.StudentRepository;
 
@@ -37,9 +39,14 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Student getStudent(int studentId) {
+	public Student getStudent(int studentId) throws StudentNotFoundExcepttion {
 		Optional<Student> student = repository.findById(studentId);
-		return student.get();
+		if (student.isPresent()) {
+			return student.get();
+
+		} else {
+			throw new StudentNotFoundExcepttion("Please Enter an valid Student number");
+		}
 	}
 
 	@Override
